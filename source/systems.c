@@ -195,6 +195,8 @@ char *add_zero(char *num) {
     int i = checkLength(buf);
     buf[i+1] = '0';
     buf[i+2] = '\0';
-    printf("\n zeroing: %s \n", buf);
     return buf;
+}
+
+char * power(char * num1, char * num2){
 }

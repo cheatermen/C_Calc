@@ -2,6 +2,7 @@
 #define C_CALC_SYSTEMS_H
 
 #include <glob.h>
+#include "stdbool.h"
 
 static const size_t SIZE = sizeof(char) * 41;
 
@@ -25,4 +26,9 @@ char *multi_by_one(char* digit, char num,int pos, int sys);
 /*Adds 0 to end of string, returns new var*/
 char *add_zero(char* num);
 
+typedef struct {
+    char * val;
+    long len;
+    bool sign;
+} NUM;
 #endif //C_CALC_SYSTEMS_H
