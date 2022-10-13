@@ -228,12 +228,13 @@ char *multiply(char *val1, char *val2, int sys) {
 char *power(char *val1, char *val2, int sys) {
     char * solution = malloc(SIZE);
     strcpy(solution, "1");
+
     if (strcmp(val2, "0") == 0){
         return solution;
     }
     char * half[SIZE];
-    half[0] = malloc(SIZE);
     char * index[SIZE];
+    half[0] = malloc(SIZE);
     index[0] = malloc(SIZE);
     strcpy(index[0], "1");
     strcpy(half[0], val1);
@@ -252,11 +253,14 @@ char *power(char *val1, char *val2, int sys) {
         i += 1;
         z *= 2;
     }
+
     long long o = i;
     i--;
     z=z/2;
+
     char * buf1 = malloc(SIZE);
     strcpy(buf1, "0");
+
     while(comp(buf1, val2) != 0) { // 8, 0->8. 8 9
         char * temp_con = addition(index[i], buf1, sys);
         if ((comp(temp_con, val2)) == 2 || comp(temp_con, val2) == 0){
@@ -288,6 +292,7 @@ char *divide(char *val1, char *val2, int sys) {
     strcpy(one, "1");
     strcpy(solution, "0");
     strcpy(comp_var, val2);
+
     while(comp(val1, comp_var) == 1 || comp(val1,comp_var)==0){
         char * temp1 = malloc(SIZE);
         char * temp2 = malloc(SIZE);

@@ -2,7 +2,7 @@
 #define C_CALC_SYSTEMS_H
 
 #include <glob.h>
-static const size_t SIZE = sizeof(char) * 410;
+static const size_t SIZE = sizeof(char) * 99999;
 
 /*Converts num to its char analogue*/
 char numToChar(int);
