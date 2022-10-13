@@ -341,7 +341,4 @@ char *divide_modulo(char *val1, char *val2, int sys) {
     free(one);
     free(comp_var);
     return solution;
-    // 7%6
-    // 6 8
-    // 7 = 6+1
 }
