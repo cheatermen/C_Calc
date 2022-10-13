@@ -4,7 +4,7 @@
 #include <glob.h>
 #include "stdbool.h"
 
-static const size_t SIZE = sizeof(char) * 41;
+static const size_t SIZE = sizeof(char) * 410;
 
 /*Converts num to its char analogue*/
 char numToChar(int);
@@ -25,6 +25,10 @@ char *multiply(char* num1, char*num2, int sys);
 char *multi_by_one(char* digit, char num,int pos, int sys);
 /*Adds 0 to end of string, returns new var*/
 char *add_zero(char* num);
+/*Compares 2 strings, returns 0 if equal, 1 if s1 > s2, 2 if s1 < s2 and 3 for no solution*/
+short comp(char * num1, char * num2);
+/*Raises val to the power of val, return new var*/
+char * power(char * num1, char * num2, int sys);
 
 typedef struct {
     char * val;

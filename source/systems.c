@@ -89,6 +89,7 @@ char* reverse(char* string){
 int checkLength(const char* string){
     int sup=0;
 
+
     while (string[sup] != '\0'){
         sup+=1;
     }
@@ -198,5 +199,85 @@ char *add_zero(char *num) {
     return buf;
 }
 
-char * power(char * num1, char * num2){
+char *power(char *num1, char *num2, int sys) {
+    char * solution = malloc(SIZE);
+    strcpy(solution, "1");
+    if (strcmp(num2, "0") == 0){
+        return solution;
+    }
+    char * half[SIZE];
+    half[0] = malloc(SIZE);
+    char * index[SIZE];
+    index[0] = malloc(SIZE);
+    strcpy(index[0], "1");
+    strcpy(half[0], num1);
+    long long i = 1;
+    long long z = 2;
+    char * q = malloc(sizeof(char)*2);
+    strcpy(q, "2");
+
+    short c = comp(index[0], num2);
+    while(c == 2){
+        half[i] = malloc(SIZE);
+        index[i] = malloc(SIZE);
+        half[i] = multiply(half[i - 1], half[i - 1], sys);
+        index[i] = multiply(index[i-1], q, sys);
+        c = comp(index[i], num2);
+        i += 1;
+        z *= 2;
+    }
+    long long o = i;
+    i--;
+    z=z/2;
+    printf("\n%lld, %lld\n", i, z);
+    char * buf1 = malloc(SIZE);
+    strcpy(buf1, "0");
+    while(comp(buf1, num2) != 0) { // 8, 0->8. 8 9
+        char * temp_con = addition(index[i], buf1, sys);
+        if ((comp(temp_con, num2)) == 2 || comp(temp_con, num2) == 0){
+            char * temp_sum = multiply(half[i], solution, sys);
+            strcpy(solution, temp_sum);
+            free(temp_sum);
+            temp_sum = addition(buf1, index[i], sys);
+            strcpy(buf1, temp_sum);
+            free(temp_sum);
+        }else{
+            i-=1;
+            z=z/2;
+        }
+        free(temp_con);
+    }
+    for (int x = 0; x < o; x++){
+        printf("\n%s", half[x]);
+        free(half[x]);
+
+    }
+    free(buf1);
+    free(q);
+    return solution;
+}
+
+
+short comp(char *num1, char *num2) {
+    if (strcmp(num1, num2) == 0){
+        return 0;
+    }
+    int i =  checkLength(num1);
+    int i2 = checkLength(num2);
+    if (i > i2){
+        return 1;
+    }else if (i < i2){
+        return 2;
+    }else{
+        for (int x = 0; x < i+1; x++){
+            int v1 = charToNum(num1[x]);
+            int v2 = charToNum(num2[x]);
+            if (v1 > v2){
+                return 1;
+            }else if (v1 < v2){
+                return 2;
+            }
+        }
+    }
+    return 3;
 }
