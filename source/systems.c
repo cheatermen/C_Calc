@@ -263,7 +263,7 @@ char *power(char *val1, char *val2, int sys) {
 
     while(comp(buf1, val2) != 0) { // 8, 0->8. 8 9
         char * temp_con = addition(index[i], buf1, sys);
-        if ((comp(temp_con, val2)) == 2 || comp(temp_con, val2) == 0){
+        if (comp(temp_con, val2) == 2 || comp(temp_con, val2) == 0){
             char * temp_sum = multiply(half[i], solution, sys);
             strcpy(solution, temp_sum);
             free(temp_sum);
