@@ -4,6 +4,7 @@
 #include "malloc.h"
 #include "string.h"
 #include "time.h"
+#include "math.h"
 int main() {
     char * q = malloc(SIZE);
     char * p = malloc(SIZE);

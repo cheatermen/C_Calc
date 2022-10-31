@@ -3,7 +3,7 @@
 #define C_CALC_IO_H
 
 int readfile();
-char * operations(char * val1, char * val2, char ** vals, int vals_count);
+void operations(char *val1, char *val2, char *sys, char * operation);
 int what_sys(char*sys_char);
 
 #endif //C_CALC_IO_H

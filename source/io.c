@@ -18,52 +18,47 @@ int readfile() {
         exit(EXIT_FAILURE);
     }
 
+    char * operation = malloc(SIZE);
+    char * system = malloc(SIZE);
+    char * score = malloc(SIZE);
+    char * val = malloc(SIZE);
+
     short start = 0;
-    char * val1 = malloc(SIZE);
-    char * val2 = malloc(SIZE);
-    int vals_count = 0;
-    char ** vals;
-    vals = calloc(10, sizeof (char *));
-    int y = 0;
+    short empty = 0;
     while ((read = getline(&line, &len, fp_in)) != -1) {
-        fprintf(fp_out,"%s", line);
         if (strcmp(line, "\n")!=0){
             short space = 0;
+            empty = 0;
             for(int i = 0; i < checkLength(line);i++){
                 if (line[i] == ' '){
-                    if (start == 1){
-                        char * temp;
-                        temp = operations(val1,val2,vals, vals_count);
-                        fprintf(fp_out,"%s", temp);
-                        free(temp);
-                        for(int x = 0; x < vals_count; x++){
-                            free(vals[x]);
-                        }
-                        vals_count = 0;
-                    }else{
-                        start = 1;
-                    }
-
-                    memcpy(val1, line, sizeof(char)*i);
-                    memcpy(val2, line+i+1, sizeof(char)* checkLength(line)-i-1);
-                    printf("|%s,%s|", val1, val2);
-                    printf(" |%d| ", i);
+                    memcpy(operation, line, sizeof(char) * i);
+                    memcpy(system, line + i + 1, sizeof(char) * checkLength(line) - i - 1);
+                    printf("|%s,%s| ", operation, system);
                     space = 1;
+                    start = 1;
                 }
             }
             if (space == 0){
-                vals[vals_count] = calloc(SIZE, sizeof (char ));
-                memcpy(vals[vals_count], line, sizeof(char )* checkLength(line));
-                printf(" |%s,%d| ", vals[vals_count], vals_count);
-                vals_count += 1;
-            }else{
+                if (start == 1){
+                    memcpy(score, line, sizeof(char )* checkLength(line));
+                    start = 0;
+                }else{
+                    memcpy(val, line, sizeof(char )* checkLength(line));
+                    operations(score, val, system, operation);
+                }
             }
+        }else{
+            if (empty == 1){
+                fprintf(fp_out,"%s", score);
+                printf("%s", score);
+            }
+            empty += 1;
         }
         printf("%s", line);
-        y+=1;
+        fprintf(fp_out,"%s", line);
     }
-    free(val1);
-    free(val2);
+    free(operation);
+    free(system);
 
     fclose(fp_in);
     fclose(fp_out);
@@ -72,29 +67,24 @@ int readfile() {
     return 0;
 }
 
-char * operations(char *val1, char *sys, char ** vals, int vals_count) {
-    char * score = malloc(SIZE);
-    strcpy(score, vals[0]);
+void operations(char *val1, char *val2, char *sys, char *operation) {
     int sys_int = what_sys(sys);
-    for(int i = 1; i < vals_count; i++){
-        char * temp;
-        if(strcmp(val1, "+")==0){
-            temp = addition(score, vals[i], sys_int);
-        }else if(strcmp(val1, "*")==0){
-            temp = multiply(score, vals[i], sys_int);
-        }else if(strcmp(val1, "^")==0){
-            temp = power(score, vals[i], sys_int);
-        }else if(strcmp(val1, "/")==0){
-            temp = divide(score, vals[i], sys_int);
-        }else if(strcmp(val1, "%")==0){
-            temp = divide_modulo(score, vals[i], sys_int);
-        }else{
-            temp = malloc(SIZE);
-        }
-        strcpy(score, temp);
-        free(temp);
+    char * temp;
+    if(strcmp(operation, "+") == 0){
+        temp = addition(val1, val2, sys_int);
+    }else if(strcmp(operation, "*") == 0){
+        temp = multiply(val1, val2, sys_int);
+    }else if(strcmp(operation, "^") == 0){
+        temp = power(val1, val2, sys_int);
+    }else if(strcmp(operation, "/") == 0){
+        temp = divide(val1, val2, sys_int);
+    }else if(strcmp(operation, "%") == 0){
+        temp = divide_modulo(val1, val2, sys_int);
+    }else{
+        return;
     }
-    return score;
+    strcpy(val1, temp);
+    free(temp);
 }
 
 int what_sys(char *sys_char) {
