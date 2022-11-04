@@ -18,10 +18,11 @@ int readfile() {
         exit(EXIT_FAILURE);
     }
 
-    char * operation = malloc(SIZE);
-    char * system = malloc(SIZE);
+    char * operation;
+    char * system;
     char * score = malloc(SIZE);
     char * val = malloc(SIZE);
+    char * temp = malloc(SIZE);
 
     short start = 0;
     short empty = 0;
@@ -31,9 +32,12 @@ int readfile() {
             empty = 0;
             for(int i = 0; i < checkLength(line);i++){
                 if (line[i] == ' '){
-                    memcpy(operation, line, sizeof(char) * i);
-                    memcpy(system, line + i + 1, sizeof(char) * checkLength(line) - i - 1);
-                    printf("|%s,%s| ", operation, system);
+                    strcpy(temp,line);
+                    temp[checkLength(line)]='\0';
+                    //printf("%s", line);
+                    operation = strtok(temp, " ");
+                    system = strtok(NULL, " ");
+                    //printf("|%s,%s| ", operation, system);
                     space = 1;
                     start = 1;
                 }
@@ -57,11 +61,12 @@ int readfile() {
         printf("%s", line);
         fprintf(fp_out,"%s", line);
     }
-    free(operation);
-    free(system);
+    //free(operation);
+    //free(system);
 
     fclose(fp_in);
     fclose(fp_out);
+    free(temp);
     if (line)
         free(line);
     return 0;
