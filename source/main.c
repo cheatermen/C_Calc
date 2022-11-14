@@ -8,11 +8,11 @@
 int main() {
     char * q = malloc(SIZE);
     char * p = malloc(SIZE);
-    //strcpy(q, "AB21314F");
+    strcpy(q, "AB21314F");
     //strcpy(p, "FA");
-    //printf("%s", power(q, p, 16));
+    printf("%s", slice(q, 4, 6));
     //212_2 //3
     //  _16
-    readfile();
+    //readfile();
     return 0;
 }

@@ -31,5 +31,6 @@ char * power(char * val1, char * val2, int sys);
 char * divide(char* val1, char*val2, int sys);
 /*Returns the remainder of val1 by val2 division, returns new var*/
 char *divide_modulo(char *val1, char *val2, int sys);
+char * slice (char * val, int x, int y);
 
 #endif //C_CALC_SYSTEMS_H

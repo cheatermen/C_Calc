@@ -286,26 +286,31 @@ char *power(char *val1, char *val2, int sys) {
 }
 
 char *divide(char *val1, char *val2, int sys) {
-    char * solution = malloc(SIZE);
-    char * comp_var = malloc(SIZE);
-    char * one = malloc(sizeof(char)*2);
-    strcpy(one, "1");
-    strcpy(solution, "0");
-    strcpy(comp_var, val2);
+    int x = checkLength(val1);
+    int y = checkLength(val2);
 
-    while(comp(val1, comp_var) == 1 || comp(val1,comp_var)==0){
-        char * temp1 = malloc(SIZE);
-        char * temp2 = malloc(SIZE);
-        temp1 = addition(comp_var, val2, sys);
-        temp2 = addition(solution, one, sys);
-        strcpy(comp_var, temp1);
-        strcpy(solution, temp2);
-        free(temp1);
-        free(temp2);
+    char * solution = malloc(SIZE);
+    strcpy(solution, "0");
+    if (y>x){
+        return solution;
     }
-    free(one);
-    free(comp_var);
-    return solution;
+
+    char * buf;
+    buf = slice(val1, 0, y-1);
+    while ()
+}
+
+
+char *slice(char *val, int x, int y) {
+    char * slice = malloc(y-x+2);
+    int i = 0;
+    while(x<=y){
+        slice[i] = val[x];
+        i+=1;
+        x+=1;
+    }
+    slice[i] = '\0';
+    return slice;
 }
 
 char *divide_modulo(char *val1, char *val2, int sys) {
@@ -346,4 +351,22 @@ char *divide_modulo(char *val1, char *val2, int sys) {
     free(one);
     free(comp_var);
     return solution;
+}
+
+char * sys_to_dec(char * val, int sys){
+    reverse(val);
+    char * score = malloc(SIZE);
+    char * buf = malloc(SIZE);
+    strcpy(score, "0");
+
+    for (int i  = 0; i< checkLength(val);i+=1){
+        char * val1 = malloc(SIZE);
+        char * val2 = malloc(SIZE);
+        sprintf(val1, "%c", val[i]);
+        sprintf(val2, "%d", sys);
+        power();
+        buf = addition(score, wyraz);
+        strcpy(score, buf);
+        free(buf);
+    }
 }
