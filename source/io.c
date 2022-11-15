@@ -12,11 +12,10 @@ int readfile() {
     ssize_t read;
 
     fp_in = fopen("examples/lk-01-in", "r");
-    fp_out = fopen("examples/lk-01-out", "w");
+    fp_out = fopen("examples/lk-01-out.txt", "w");
     if (fp_in == NULL) {
         fp_in = fopen("examples/lk-01-in.txt", "r");
         if(fp_in == NULL){
-            printf("nie dalo sie");
             exit(EXIT_FAILURE);
         }
     }
@@ -39,10 +38,8 @@ int readfile() {
                 if (line[i] == ' '){
                     strcpy(temp,line);
                     temp[checkLength(line)]='\0';
-                    //printf("%s", line);
                     operation = strtok(temp, " ");
                     system = strtok(NULL, " ");
-                    //printf("|%s,%s| ", operation, system);
                     space = 1;
                     start = 1;
                     strcpy(score, "0");
@@ -73,8 +70,6 @@ int readfile() {
         printf("%s", line);
         fprintf(fp_out,"%s", line);
     }
-    //free(operation);
-    //free(system);
 
     fclose(fp_in);
     fclose(fp_out);
@@ -87,8 +82,7 @@ int readfile() {
 void operations(char *val1, char *val2, char *sys, char *operation) {
     int sys_int = sysCharToInt(sys);
     char * temp;
-    char * error = malloc(7*sizeof(char ));
-    strcpy(error, "error");
+
     if(strcmp(operation, "+") == 0){
         temp = addition(val1, val2, sys_int);
     }else if(strcmp(operation, "*") == 0){
