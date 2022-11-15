@@ -6,8 +6,9 @@ static const size_t SIZE = sizeof(char) * 99999;
 
 /*Converts num to its char analogue*/
 char numToChar(int);
-char *decToSys(long long, int);
-long long sysToDec(char*, int);
+char *decToSys(char * val, int sys);
+char sys_char_to_char(char *sys_char);
+char * sysToDec(char * val, int sys);
 /*Reverses a string*/
 char *reverse(char*);
 /*Converts a char to its numeral analogue*/
@@ -31,5 +32,6 @@ char * power(char * val1, char * val2, int sys);
 char * divide(char* val1, char*val2, int sys);
 /*Returns the remainder of val1 by val2 division, returns new var*/
 char *divide_modulo(char *val1, char *val2, int sys);
+char *slice(char *val, int x, int y);
 
 #endif //C_CALC_SYSTEMS_H

@@ -40,12 +40,17 @@ int readfile() {
                     //printf("|%s,%s| ", operation, system);
                     space = 1;
                     start = 1;
+                    strcpy(score, "0");
                 }
             }
             if (space == 0){
                 if (start == 1){
                     memcpy(score, line, sizeof(char )* checkLength(line));
                     start = 0;
+                    if (strcmp(operation,"+")!=0 && strcmp(operation,"*")!=0 && strcmp(operation,"/")!=0 &&
+                    strcmp(operation,"%")!=0 && strcmp(operation,"^")!=0){
+                        operations(score,val,system,operation);
+                    }
                 }else{
                     memcpy(val, line, sizeof(char )* checkLength(line));
                     operations(score, val, system, operation);
@@ -86,7 +91,10 @@ void operations(char *val1, char *val2, char *sys, char *operation) {
     }else if(strcmp(operation, "%") == 0){
         temp = divide_modulo(val1, val2, sys_int);
     }else{
-        return;
+        char * buf;
+        buf = sysToDec(val1, what_sys(operation));
+        temp = decToSys(buf, what_sys(sys));
+        free(buf);
     }
     strcpy(val1, temp);
     free(temp);

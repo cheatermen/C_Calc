@@ -36,6 +36,43 @@ int charToNum(char ch){
     return num;
 }
 
+char sys_char_to_char(char *sys_char) {
+    if(strcmp(sys_char, "15")==0){
+        return 'F';
+    }else if(strcmp(sys_char, "14")==0){
+        return 'E';
+    }else if(strcmp(sys_char, "13")==0){
+        return 'D';
+    }else if(strcmp(sys_char, "12")==0){
+        return 'C';
+    }else if(strcmp(sys_char, "11")==0){
+        return 'B';
+    }else if(strcmp(sys_char, "10")==0) {
+        return 'A';
+    }else if(strcmp(sys_char, "9")==0) {
+        return '9';
+    }else if(strcmp(sys_char, "8")==0) {
+        return '8';
+    }else if(strcmp(sys_char, "7")==0) {
+        return '7';
+    }else if(strcmp(sys_char, "6")==0) {
+        return '6';
+    }else if(strcmp(sys_char, "5")==0) {
+        return '5';
+    }else if(strcmp(sys_char, "4")==0) {
+        return '4';
+    }else if(strcmp(sys_char, "3")==0) {
+        return '3';
+    }else if(strcmp(sys_char, "2")==0) {
+        return '2';
+    }else if(strcmp(sys_char, "1")==0) {
+        return '1';
+    }else if(strcmp(sys_char, "0")==0) {
+        return '0';
+    }
+    return '0';
+}
+
 char* reverse(char* string){
     char *buf = malloc(SIZE);
     strcpy(buf,"");
@@ -75,6 +112,18 @@ char *add_zero(char *num) {
     return buf;
 }
 
+char *slice(char *val, int x, int y) {
+    char * slice = malloc(y-x+2);
+    int i = 0;
+    while(x<=y){
+        slice[i] = val[x];
+        i+=1;
+        x+=1;
+    }
+    slice[i] = '\0';
+    return slice;
+}
+
 short comp(char *num1, char *num2) {
     if (strcmp(num1, num2) == 0){
         return 0;
@@ -99,37 +148,85 @@ short comp(char *num1, char *num2) {
     return 3;
 }
 
-char *decToSys(long long num, int sys){
-    char *string = malloc(SIZE);
-    int i = 0;
 
-    while (num != 0){
-        if (i > 40){
-            printf("Num too long");
-            return 0;
-        }
-        string[i] = numToChar(num % sys);
-        num = num / sys;
+char *decToSys(char *val, int sys) {
+    char * sys_char= malloc(4*sizeof(char));
+    char * buf = malloc(SIZE);
+    char * buf2;
+    char * buf3 = malloc(SIZE);
+    char * solution = malloc(SIZE);
+    char * zero = malloc(sizeof(char)*2);
+    sprintf(zero, "%d", 0);
+
+    sprintf(sys_char, "%d", sys);
+    strcpy(buf, val);
+    int i = 0;
+    while(comp(buf,zero)!=0){
+        buf3 = divide_modulo(buf, sys_char ,10);
+        buf2 = divide(buf,sys_char,10);
+        strcpy(buf, buf2);
+        solution[i] = sys_char_to_char(buf3);
         i+=1;
     }
-    string[i] = '\0';
+    solution[i]='\0';
+    reverse(solution);
+    return solution;
+    // char *string = malloc(SIZE);
+    // int i = 0;
 
-    string = reverse(string);
-    return string;
+    // while (num != 0){
+    //     if (i > 40){
+    //         printf("Num too long");
+    //         return 0;
+    //     }
+    //     string[i] = numToChar(num % sys);
+    //     num = num / sys;
+    //     i+=1;
+    // }
+    // string[i] = '\0';
+
+    // string = reverse(string);
+    // return string;
 }
 
-long long sysToDec(char * string,int sys){
-    long long dec = 0;
-    int sup=0;
-    while (string[sup]!='\0'){
-        sup+=1;
+
+char *sysToDec(char *val, int sys) {
+    reverse(val);
+    char * buf;
+    char * buf2;
+    char * multiplier = malloc(SIZE);
+    char * solution = malloc(SIZE);
+    char * sys_char = malloc(SIZE);
+    char * p = malloc(SIZE);
+    strcpy(solution, "0");
+    for(int i = 0; i<= checkLength(val); i+=1){
+        sprintf(sys_char, "%d", sys);
+        sprintf(p, "%d", i);
+        buf = power(sys_char, p, 10);
+
+        sprintf(multiplier, "%d", charToNum(val[i]));
+        buf2 = multiply(buf, multiplier, 10);
+        free(buf);
+        buf = addition(solution, buf2, 10);
+        strcpy(solution, buf);
+        free(buf);
+        free(buf2);
     }
-    sup--;
-    for(int i = sup; i >= 0; i--){
-        int buf = charToNum(string[i]);
-        dec+=pow(sys,sup - i)*buf;
-    }
-    return dec;
+    free(sys_char);
+    free(multiplier);
+    reverse(val);
+    return solution;
+    //long long dec = 0;
+    //int sup=0;
+    //while (string[sup]!='\0'){
+    //    sup+=1;
+    //}
+    //sup--;
+    //for(int i = sup; i >= 0; i--){
+    //    int buf = charToNum(string[i]);
+    //    dec+=pow(sys,sup - i)*buf;
+    //}
+    //return dec;
 }
 
 char* addition(char* val1, char*val2, int sys){
