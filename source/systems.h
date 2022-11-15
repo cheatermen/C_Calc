@@ -4,34 +4,50 @@
 #include <glob.h>
 static const size_t SIZE = sizeof(char) * 99999;
 
-/*Converts num to its char analogue*/
-char numToChar(int);
-char *decToSys(char * val, int sys);
-char sys_char_to_char(char *sys_char);
-char * sysToDec(char * val, int sys);
-/*Reverses a string*/
-char *reverse(char*);
-/*Converts a char to its numeral analogue*/
-int charToNum(char);
-/*Checks len of string*/
-int checkLength(const char*);
-/*Adds val2 to val1, returns new var*/
+//biblioteka glownych funkcji
+
+//Glowne funkcje:
+
+//Dodawanie
 char *addition(char*, char*, int);
-char *recursive_addition(char* val1, char digit1, int pos, int sys);
-/*Multiplies val1 by val2, returns new var*/
+char *recursiveAddition(char* val1, char digit1, int pos, int sys);
+//Mnozenie
 char *multiply(char* val1, char*val2, int sys);
-/*Multiplies val1 by digit1, returns new var*/
-char *multi_by_one(char* digit, char num,int pos, int sys);
-/*Adds 0 to end of string, returns new var*/
-char *add_zero(char* num);
-/*Compares 2 strings, returns 0 if equal, 1 if s1 > s2, 2 if s1 < s2 and 3 for no solution*/
-short comp(char * num1, char * num2);
-/*Raises val1 to the power of val2, returns new var*/
+char *multiByOne(char* digit, char num, int pos, int sys);
+//Potegowanie
 char * power(char * val1, char * val2, int sys);
-/*Divides val1 by val2, if undefined, returns lower val, returns new var*/
+//Dzielenie
 char * divide(char* val1, char*val2, int sys);
-/*Returns the remainder of val1 by val2 division, returns new var*/
-char *divide_modulo(char *val1, char *val2, int sys);
+//Dzielenie Modulo
+char *divideModulo(char *val1, char *val2, int sys);
+
+//Zamiana liczby w systemie dziesietnym na dowolny <2,16>
+char *decToSys(char * val, int sys);
+//Zamiana liczby w dowolnego systemie <2, 16> na dziesiętny
+char * sysToDec(char * val, int sys);
+
+
+//Funkcje pomocnicze:
+
+//Konwersje z int na char, string na int, string na string
+//potrzebne przy wykonywaniu programu
+char numToChar(int);
+int charToNum(char);
+char sysCharToChar(char *sys_char);
+int sysCharToInt(char*sys_char);
+
+//odwrocenie stringa
+char *reverse(char*);
+//sprawdzenie dlugosci stringa
+int checkLength(const char*);
+//dodanie '0' na koniec stringa
+char *addZero(char* num);
+//porowananie dwoch liczb zapisanych jako stringi
+//zwraca 0 jesli sa rowne, 1 jesli num1>num2, 2 jesli num1<num2, 3 jesli operacja sie nie powiodla
+short comp(char * num1, char * num2);
+//zwrocenie kawalka stringa od indeksu x do indeksu y
 char *slice(char *val, int x, int y);
+//zamienia znak \n na \0 w stringu
+char * deleteEndl(char * string);
 
 #endif //C_CALC_SYSTEMS_H

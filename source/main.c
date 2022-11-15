@@ -6,12 +6,6 @@
 #include "time.h"
 #include "math.h"
 int main() {
-    //char * q = malloc(SIZE);
-    //char * p = malloc(SIZE);
-    //strcpy(q, "30435");
-    //strcpy(p, "10");
-    //212_2 //3
-    //  _16
     readfile();
     return 0;
 }

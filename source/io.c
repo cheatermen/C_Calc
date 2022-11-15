@@ -11,13 +11,18 @@ int readfile() {
     size_t len = 0;
     ssize_t read;
 
-    printf("\n\n");
-    fp_in = fopen("../examples/lk-01-in", "r");
-    fp_out = fopen("../examples/lk-01-out", "w");
+    fp_in = fopen("examples/lk-01-in", "r");
+    fp_out = fopen("examples/lk-01-out", "w");
     if (fp_in == NULL) {
-        exit(EXIT_FAILURE);
+        fp_in = fopen("examples/lk-01-in.txt", "r");
+        if(fp_in == NULL){
+            printf("nie dalo sie");
+            exit(EXIT_FAILURE);
+        }
     }
-
+    if (fp_out == NULL) {
+        fp_out = fopen("examples/lk-01-out.txt", "r");
+    }
     char * operation;
     char * system;
     char * score = malloc(SIZE);
@@ -45,14 +50,16 @@ int readfile() {
             }
             if (space == 0){
                 if (start == 1){
-                    memcpy(score, line, sizeof(char )* checkLength(line));
+                    sprintf(score,"%s", line);
+                    deleteEndl(score);
                     start = 0;
                     if (strcmp(operation,"+")!=0 && strcmp(operation,"*")!=0 && strcmp(operation,"/")!=0 &&
                     strcmp(operation,"%")!=0 && strcmp(operation,"^")!=0){
                         operations(score,val,system,operation);
                     }
                 }else{
-                    memcpy(val, line, sizeof(char )* checkLength(line));
+                    sprintf(val,"%s", line);
+                    deleteEndl(val);
                     operations(score, val, system, operation);
                 }
             }
@@ -78,8 +85,10 @@ int readfile() {
 }
 
 void operations(char *val1, char *val2, char *sys, char *operation) {
-    int sys_int = what_sys(sys);
+    int sys_int = sysCharToInt(sys);
     char * temp;
+    char * error = malloc(7*sizeof(char ));
+    strcpy(error, "error");
     if(strcmp(operation, "+") == 0){
         temp = addition(val1, val2, sys_int);
     }else if(strcmp(operation, "*") == 0){
@@ -89,53 +98,13 @@ void operations(char *val1, char *val2, char *sys, char *operation) {
     }else if(strcmp(operation, "/") == 0){
         temp = divide(val1, val2, sys_int);
     }else if(strcmp(operation, "%") == 0){
-        temp = divide_modulo(val1, val2, sys_int);
+        temp = divideModulo(val1, val2, sys_int);
     }else{
         char * buf;
-        buf = sysToDec(val1, what_sys(operation));
-        temp = decToSys(buf, what_sys(sys));
+        buf = sysToDec(val1, sysCharToInt(operation));
+        temp = decToSys(buf, sysCharToInt(sys));
         free(buf);
     }
     strcpy(val1, temp);
     free(temp);
-}
-
-int what_sys(char *sys_char) {
-    int sys;
-    if (strcmp(sys_char, "1")==0){
-        sys = 1;
-    }else if (strcmp(sys_char, "2")==0){
-        sys = 2;
-    }else if (strcmp(sys_char, "3")==0){
-        sys = 3;
-    }else if (strcmp(sys_char, "4")==0){
-        sys = 4;
-    }else if (strcmp(sys_char, "5")==0){
-        sys = 5;
-    }else if (strcmp(sys_char, "6")==0){
-        sys = 6;
-    }else if (strcmp(sys_char, "7")==0){
-        sys = 7;
-    }else if (strcmp(sys_char, "8")==0){
-        sys = 8;
-    }else if (strcmp(sys_char, "9")==0){
-        sys = 9;
-    }else if (strcmp(sys_char, "10")==0){
-        sys = 10;
-    }else if (strcmp(sys_char, "11")==0){
-        sys = 11;
-    }else if (strcmp(sys_char, "12")==0){
-        sys = 12;
-    }else if (strcmp(sys_char, "13")==0){
-        sys = 13;
-    }else if (strcmp(sys_char, "14")==0){
-        sys = 14;
-    }else if (strcmp(sys_char, "15")==0){
-        sys = 15;
-    }else if (strcmp(sys_char, "16")==0){
-        sys = 16;
-    }else{
-        sys = 0;
-    }
-    return sys;
 }
