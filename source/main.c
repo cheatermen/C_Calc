@@ -5,7 +5,9 @@
 #include "string.h"
 #include "time.h"
 #include "math.h"
-int main() {
-    readfile();
+int main(int argc, char *argv[]) {
+    if (argc == 2){
+        readfile(argv);
+    }
     return 0;
 }

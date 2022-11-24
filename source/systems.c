@@ -1,6 +1,7 @@
 #include "systems.h"
 #include <string.h>
 #include <malloc.h>
+#include "stdio.h"
 
 
 
@@ -112,6 +113,16 @@ char sysCharToChar(char *sys_char) {
     return '0';
 }
 
+short isValidNumber(char *val, int sys) {
+    for (int i = 0; i < checkLength(val)+1; i++){
+        int x = charToNum(val[i]);
+        if(charToNum(val[i])>=sys){
+            return 0;
+        }
+    }
+    return 1;
+}
+
 char* reverse(char* string){
     char *buf = malloc(SIZE);
     strcpy(buf,"");
@@ -163,6 +174,18 @@ char *addZero(char *num) {
     return buf;
 }
 
+void *deleteZeros(char *num) {
+    reverse(num); // 00001 // 1000 00231 13200 231
+    for (int i = checkLength(num); i >= 0; i--){
+        if (num[i] != '0'){
+            num[i+1] = '\0';
+            reverse(num);
+            break;
+        }
+    }
+    return 0;
+}
+
 char * slice(char *val, int x, int y) {
     char * slice = malloc(y-x+2);
     int i = 0;
@@ -201,14 +224,17 @@ short comp(char *num1, char *num2) {
 
 
 char *decToSys(char *val, int sys) {
+    char * solution = malloc(SIZE);
+    if(strcmp(val, "-1")==0){
+        strcpy(solution, "-1");
+        return solution;
+    }
     char * sys_char= malloc(4*sizeof(char));
     char * buf = malloc(SIZE);
     char * buf2;
-    char * buf3 = malloc(SIZE);
-    char * solution = malloc(SIZE);
+    char * buf3;
     char * zero = malloc(sizeof(char)*2);
     sprintf(zero, "%d", 0);
-
     sprintf(sys_char, "%d", sys);
     strcpy(buf, val);
     int i = 0;
@@ -217,23 +243,33 @@ char *decToSys(char *val, int sys) {
         buf2 = divide(buf,sys_char,10);
         strcpy(buf, buf2);
         solution[i] = sysCharToChar(buf3);
+        free(buf2);
+        free(buf3);
         i+=1;
     }
     solution[i]='\0';
     reverse(solution);
+    free(zero);
+    free(buf);
+    free(sys_char);
     return solution;
 }
 
 
 char *sysToDec(char *val, int sys) {
+    char * solution = malloc(SIZE);
+    if(strcmp(val, "-1")==0){
+        strcpy(solution, "-1");
+        return solution;
+    }
     reverse(val);
     char * buf;
     char * buf2;
     char * multiplier = malloc(SIZE);
-    char * solution = malloc(SIZE);
     char * sys_char = malloc(SIZE);
     char * p = malloc(SIZE);
     strcpy(solution, "0");
+
     for(int i = 0; i<= checkLength(val); i+=1){
         sprintf(sys_char, "%d", sys);
         sprintf(p, "%d", i);
@@ -256,6 +292,10 @@ char *sysToDec(char *val, int sys) {
 
 char* addition(char* val1, char*val2, int sys){
     char* buf1 = malloc(SIZE);
+    if(strcmp(val1, "-1") == 0 || strcmp(val2, "-1") == 0){
+        strcpy(buf1, "-1");
+        return buf1;
+    }
     char* buf2 = malloc(SIZE);
     reverse(strcpy(buf1, val1));
     reverse(strcpy(buf2, val2));
@@ -297,7 +337,6 @@ char *multiByOne(char *digit, char num, int pos, int sys) {
 
     int i = 1, z = 2;
     while(z < a) {
-        half[i] = malloc(SIZE);
         half[i] = addition(half[i - 1], half[i - 1], sys);
         z *= 2;
         i += 1;
@@ -318,7 +357,7 @@ char *multiByOne(char *digit, char num, int pos, int sys) {
         }
     }
 
-    for(i=0;i<o;i++){
+    for(i=0;i<=o;i++){
         free(half[i]);
     }
     for (i=0;i<pos;i++){
@@ -331,6 +370,14 @@ char *multiByOne(char *digit, char num, int pos, int sys) {
 
 char *multiply(char *val1, char *val2, int sys) {
     char * sum = malloc(SIZE);
+    if(strcmp(val1, "-1") == 0 || strcmp(val2, "-1") == 0){
+        strcpy(sum, "-1");
+        return sum;
+    }
+    if(strcmp(val1, "0") == 0 || strcmp(val2, "0") == 0){
+        strcpy(sum, "0");
+        return sum;
+    }
     char * buf = malloc(SIZE);
     strcpy(buf, val2);
     reverse(buf);
@@ -340,10 +387,11 @@ char *multiply(char *val1, char *val2, int sys) {
     for (int i=0;i<=lim;i++){
         char * temp = multiByOne(val1, buf[i], i, sys);
         char * temp2 = addition(sum, temp, sys);
-        free(sum);
+        strcpy(sum, temp2);
         free(temp);
-        sum = temp2;
+        free(temp2);
     }
+    free(buf);
     return sum;
 }
 
@@ -351,7 +399,15 @@ char *power(char *val1, char *val2, int sys) {
     char * solution = malloc(SIZE);
     strcpy(solution, "1");
 
+    if(strcmp(val1, "-1") == 0 || strcmp(val2, "-1") == 0){
+        strcpy(solution, "-1");
+        return solution;
+    }
     if (strcmp(val2, "0") == 0){
+        if(strcmp(val1, "0") == 0){
+            strcpy(solution, "0");
+            return solution;
+        }
         return solution;
     }
     char * half[SIZE];
@@ -367,8 +423,6 @@ char *power(char *val1, char *val2, int sys) {
 
     short c = comp(index[0], val2);
     while(c == 2){
-        half[i] = malloc(SIZE);
-        index[i] = malloc(SIZE);
         half[i] = multiply(half[i - 1], half[i - 1], sys);
         index[i] = multiply(index[i-1], q, sys);
         c = comp(index[i], val2);
@@ -408,19 +462,27 @@ char *power(char *val1, char *val2, int sys) {
 }
 
 char *divide(char *val1, char *val2, int sys) {
+    char * solution = malloc(SIZE);
+    if(strcmp(val1, "-1") == 0 || strcmp(val2, "-1") == 0){
+        strcpy(solution, "-1");
+        return solution;
+    }
+    if(comp(val2,"1")==0){
+        strcpy(solution, val1);
+        return solution;
+    }
+    if(comp(val2,"0")==0){
+        strcpy(solution, "0");
+        return solution;
+    }
     char * buf;
     char * sum = malloc(SIZE);
     char * buf2;
-    char * solution = malloc(SIZE);
     char * power_i = malloc(SIZE);
     char * one = malloc(SIZE);
     char ** powers = malloc(SIZE);
     char ** powers_i = malloc(SIZE);
 
-    if(comp(val2,"1")==0){
-        strcpy(solution, val1);
-        return solution;
-    }
     strcpy(solution, "0");
     strcpy(sum, "0");
     strcpy(power_i, "1");
@@ -439,13 +501,6 @@ char *divide(char *val1, char *val2, int sys) {
 
     long i = 1;
     long o = 0;
-    if(comp(val2,val1)==1){
-        return solution;
-    }
-    if(comp(val2,val1)==0){
-        strcpy(solution, "1");
-        return solution;
-    }
     while (comp(val1,powers[i-1])==1){
         powers[i] = power(val2, powers_i[i], sys);
         powers_i[i+1] = addition(powers_i[i], one, sys);
@@ -477,18 +532,40 @@ char *divide(char *val1, char *val2, int sys) {
     free(power_i);
     free(one);
     free(powers_i[0]);
-    for (i = 0; i < o; i++){
+    for (i = 0; i <= o; i++){
         free(powers[i]);
         free(powers_i[i+1]);
     }
+    free(powers);
+    free(powers_i);
     return solution;
 }
 
 char *divideModulo(char *val1, char *val2, int sys) {
+    char * solution = malloc(SIZE);
+    if(strcmp(val1, "-1") == 0 || strcmp(val2, "-1") == 0){
+        strcpy(solution, "-1");
+        return solution;
+    }
+    if(strcmp(val2,"0")==0){
+        strcpy(solution, "0");
+        return solution;
+    }
+    if(strcmp(val2,"0")==0){
+        strcpy(solution, val1);
+        return solution;
+    }
+    if(comp(val2,val1)==1){
+        strcpy(solution, val1);
+        return solution;
+    }
+    if(comp(val2,val1)==0){
+        strcpy(solution, "0");
+        return solution;
+    }
     char * buf;
     char * sum = malloc(SIZE);
     char * buf2;
-    char * solution = malloc(SIZE);
     char * power_i = malloc(SIZE);
     char * one = malloc(SIZE);
     char ** powers = malloc(SIZE);
@@ -511,18 +588,7 @@ char *divideModulo(char *val1, char *val2, int sys) {
 
 
     long i = 1;
-    if(comp(val2,"1")==0){
-        strcpy(solution, "0");
-        return solution;
-    }
-    if(comp(val2,val1)==1){
-        strcpy(solution, val1);
-        return solution;
-    }
-    if(comp(val2,val1)==0){
-        strcpy(solution, "0");
-        return solution;
-    }
+
     while (comp(val1,powers[i-1])==1){
         powers[i] = power(val2, powers_i[i], sys);
         powers_i[i+1] = addition(powers_i[i], one, sys);
@@ -541,6 +607,7 @@ char *divideModulo(char *val1, char *val2, int sys) {
     buf2 = malloc(SIZE);
     strcpy(buf2, sum);
     if(comp(buf2, val1)==0){
+        free(buf2);
         strcpy(solution, "0");
         return solution;
     }
@@ -553,14 +620,17 @@ char *divideModulo(char *val1, char *val2, int sys) {
         free(buf);
     }
 
+    free(buf2);
     free(sum);
-    free(power_i);
     free(one);
+    free(power_i);
     free(powers_i[0]);
-    for (i = 0; i < o; i++){
+    for (i = 0; i <= o; i++){
         free(powers[i]);
         free(powers_i[i+1]);
     }
+    free(powers);
+    free(powers_i);
     return solution;
 }
 

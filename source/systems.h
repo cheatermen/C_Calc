@@ -1,8 +1,7 @@
 #ifndef C_CALC_SYSTEMS_H
 #define C_CALC_SYSTEMS_H
 
-#include <glob.h>
-static const size_t SIZE = sizeof(char) * 99999;
+static const long long SIZE = sizeof(char) * 99999;
 
 //biblioteka glownych funkcji
 
@@ -42,6 +41,8 @@ char *reverse(char*);
 int checkLength(const char*);
 //dodanie '0' na koniec stringa
 char *addZero(char* num);
+//usuwa '0' na poczatku liczby
+void *deleteZeros(char * num);
 //porowananie dwoch liczb zapisanych jako stringi
 //zwraca 0 jesli sa rowne, 1 jesli num1>num2, 2 jesli num1<num2, 3 jesli operacja sie nie powiodla
 short comp(char * num1, char * num2);
@@ -49,5 +50,7 @@ short comp(char * num1, char * num2);
 char *slice(char *val, int x, int y);
 //zamienia znak \n na \0 w stringu
 char * deleteEndl(char * string);
+//sprawdza czy liczba zawiera sie w swoim systemie liczbowym
+short isValidNumber(char * val, int sys);
 
 #endif //C_CALC_SYSTEMS_H
