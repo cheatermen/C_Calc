@@ -105,12 +105,12 @@ int readfile(char *argv[]) {
 
 void operations(char *val1, char *val2, char *sys, char *operation) {
     int sys_int = sysCharToInt(sys);
-    //if (strcmp(operation, "+")==0&&strcmp(operation, "*")==0&&strcmp(operation, "/")==0&&strcmp(operation, "%")==0&&strcmp(operation, "^")==0){
-    //    if (isValidNumber(val1, sys_int)==0 || isValidNumber(val2, sys_int)==0){
-    //        strcpy(val1, "-1");
-    //        return;
-    //    }
-    //}
+    if (strcmp(operation, "+")==0&&strcmp(operation, "*")==0&&strcmp(operation, "/")==0&&strcmp(operation, "%")==0&&strcmp(operation, "^")==0){
+        if (isValidNumber(val1, sys_int)==0 || isValidNumber(val2, sys_int)==0){
+            strcpy(val1, "-1");
+            return;
+        }
+    }
     char * temp;
     deleteZeros(val1);
     deleteZeros(val2);
